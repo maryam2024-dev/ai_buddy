@@ -8,6 +8,8 @@ from agents.normal_story_agent import router as normal_story_agent_router
 # from agents.evaluaetion_agent import router as evaluaetion_agent_router
 from agents.alpabet_arab_agent import router as alpabet_arab_agent_router
 # from agents.alpabet_eng_agent import router as alpabet_eng_agent_router
+from agents.generate_image import router as generate_image_agent_router
+
 
 
 
@@ -43,6 +45,10 @@ templates = Jinja2Templates(directory="templates")
 app.include_router(normal_story_agent_router, prefix="/api/normal-story", tags=["Bedtime Stories"])
 # app.include_router(interactive_story_agent_router, prefix="/api/interactive-story", tags=["Interactive Stories"])
 app.include_router(alpabet_arab_agent_router, prefix="/api/alpabet-arab", tags=["Alpabet Arabs"])
+# app.include_router(alpabet_arab_agent_router, prefix="/api/alpabet-eng", tags=["Alpabet English"])
+app.include_router(generate_image_agent_router, prefix="/api/generate-image", tags=["Generate Image"])
+
+
 
 
 
