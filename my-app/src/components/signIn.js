@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useNavigate } from 'react';
 import Header from "./header";
 import "./design.css";
 
 const SignIp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    const navigate = useNavigate();
     return (
         <div className={"box-border flex flex-col justify-center items-center"}>
             <div className={"w-full box-border pt-[20px] pl-[57px]"}>
@@ -51,7 +51,7 @@ const SignIp = () => {
                 </svg>
             </div>
 
-            <button className={"mt-[62px] ml-[640px] next-btn"}>
+            <button onClick={() => navigate("/home")} className={"mt-[62px] ml-[640px] next-btn"}>
                 الدخول
             </button>
             <div className={"h-8 w-[20px]"}>
