@@ -1,6 +1,7 @@
-import React, { useState, useNavigate } from 'react';
+import React, { useState } from 'react';
 import Header from "./header";
 import "./design.css";
+import {useNavigate} from "react-router-dom";
 
 const SignIp = () => {
     const [email, setEmail] = useState("");
