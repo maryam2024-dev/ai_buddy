@@ -20,11 +20,11 @@ const Alphabet = () => {
                     مرحبًا <span className={"text-amber-300"}>ريم</span>
                 </p>
             </div>
-            <div className={"mt-[24px] flex flex-col w-full pr-[100px] gap-[16px]"}>
-                <p className={"text-end font-roboto not-italic font-normal text-[22px] leading-[28px] flex items-center text-black"}>
+            <div className={"mt-[24px] w-full flex flex-col pr-[100px] gap-[16px]"}>
+                <p className={"text-end font-roboto not-italic font-normal text-[22px] leading-[28px] text-black"}>
                     اختبار اللغة العربية
                 </p>
-                <p className={"text-end font-roboto not-italic font-normal text-[22px] leading-[28px] flex items-center text-black"}>
+                <p className={"text-end font-roboto not-italic font-normal text-[22px] leading-[28px] text-black"}>
                     المستوي الاول
                 </p>
             </div>
