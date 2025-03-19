@@ -40,7 +40,7 @@ const Alphabet = () => {
                     </div>
                 </div>
             </div>
-            <button onClick={() => navigate("eval")} className={"mt-[62px] ml-[70%] next-btn"}>تقدم</button>
+            <button onClick={() => navigate("/eval")} className={"mt-[62px] ml-[70%] next-btn"}>تقدم</button>
         </div>
     );
 };
