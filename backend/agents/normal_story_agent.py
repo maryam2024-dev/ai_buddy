@@ -106,27 +106,27 @@ async def create_user_stories(category: str, size: str):
                 api_name="/chat"
 )
 
-        # response = client.predict(
-        #         query=full_prompt,
-        #         history=[],
-        #         system="You are a writer for children stories.",
-        #         api_name="/model_chat"
-        # )
-        # text_content = response
-        # Extract the generated story from the response
-        if hasattr(response, "choices") and response.choices:
-            first_choice = response.choices[0]
+        # # response = client.predict(
+        # #         query=full_prompt,
+        # #         history=[],
+        # #         system="You are a writer for children stories.",
+        # #         api_name="/model_chat"
+        # # )
+        # # text_content = response
+        # # Extract the generated story from the response
+        # if hasattr(response, "choices") and response.choices:
+        #     first_choice = response.choices[0]
 
-            if hasattr(first_choice, "message") and hasattr(first_choice.message, "content"):
-                text_content = first_choice.message.content.strip()
-                print(f"text_content: {text_content}")
-            else:
-                raise HTTPException(status_code=400, detail="Unexpected response format from Hugging Face API.")
-        else:
-            raise HTTPException(status_code=400, detail="No response choices found from Hugging Face API.")
+        #     if hasattr(first_choice, "message") and hasattr(first_choice.message, "content"):
+        #         text_content = first_choice.message.content.strip()
+        #         print(f"text_content: {text_content}")
+        #     else:
+        #         raise HTTPException(status_code=400, detail="Unexpected response format from Hugging Face API.")
+        # else:
+        #     raise HTTPException(status_code=400, detail="No response choices found from Hugging Face API.")
         
         # Step 1: Generate an image prompt based on the story
-        image_prompt = f"A vibrant, dreamy children's illustration that captures the essence of a story about {text_content}, visually depicting the theme of {category} with soft painterly textures, realistic yet whimsical characters, and warm pastel colors. The scene should be expressive, alive, and emotionally engaging, ensuring all elements—characters, objects, and environment—are accurate, well-proportioned, and fitting to the story. Avoid unrealistic distortions or irrelevant elements, embracing a charming and magical style inspired by Beatrice Blue."
+        image_prompt = f"A vibrant, dreamy children's illustration that captures the essence of a story about {response}, visually depicting the theme of {category} with soft painterly textures, realistic yet whimsical characters, and warm pastel colors. The scene should be expressive, alive, and emotionally engaging, ensuring all elements—characters, objects, and environment—are accurate, well-proportioned, and fitting to the story. Avoid unrealistic distortions or irrelevant elements, embracing a charming and magical style inspired by Beatrice Blue."
 
 
       
@@ -138,28 +138,28 @@ async def create_user_stories(category: str, size: str):
         # prompt = "1girl, green hair, sweater, looking at viewer, upper body, beanie, outdoors, night, turtleneck, masterpiece, best quality"
          
         print("Connecting to Gradio client...")
-        client_gradio = Client(GRADIO_MODEL)
-        # client = Client("agents-course/text-to-image")
+        # client_gradio = Client(GRADIO_MODEL)
+        client = Client("agents-course/text-to-image")
 
         print(f"Generating image for prompt: {image_prompt}")
         
         
-        # result = client.predict(
-        #         param_0=image_prompt,
-        #         api_name="/predict"
-        # )
-        # print(result)
-        result = client_gradio.predict(
-            prompt=image_prompt,
-            negative_prompt="",
-            seed=0,
-            randomize_seed=True,
-            width=panorama_width,
-            height=panorama_height,
-            guidance_scale=7.5,
-            num_inference_steps=25,
-            api_name="/infer"
+        result = client.predict(
+                param_0=image_prompt,
+                api_name="/predict"
         )
+        # print(result)
+        # result = client_gradio.predict(
+        #     prompt=image_prompt,
+        #     negative_prompt="",
+        #     seed=0,
+        #     randomize_seed=True,
+        #     width=panorama_width,
+        #     height=panorama_height,
+        #     guidance_scale=7.5,
+        #     num_inference_steps=25,
+        #     api_name="/infer"
+        # )
 
         print(f"Result from Gradio Client: {result}")  # Debugging line
 
@@ -187,7 +187,7 @@ async def create_user_stories(category: str, size: str):
         print(f"Public image URL: {public_image_url}")
         
         return {
-            "story": text_content,
+            "story": response,
             "image_path": public_image_url
         }
 
