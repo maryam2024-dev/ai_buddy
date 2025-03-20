@@ -7,7 +7,7 @@ import Alphabet from "./components/alphabet"; // Defaults to weight 400
 
 function App() {
   return (
-    <Alphabet />
+    <Splash />
   );
 }
 
