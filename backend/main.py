@@ -11,6 +11,8 @@ from agents.alpabet_eng_agent import router as alpabet_eng_agent_router
 from agents.alpabet_eng_agent import router as alpabet_eng_agent_router
 from agents.generate_image import router as generate_image_agent_router
 from agents.mathematic_agent import router as mathematic_agent_router
+from routes.user_route import router as user_router
+
 
 
 
@@ -52,6 +54,7 @@ app.include_router(alpabet_eng_agent_router, prefix="/api/alpabet-eng", tags=["A
 app.include_router(alpabet_eng_agent_router, prefix="/api/alpabet-eng", tags=["Alpabet English"])
 app.include_router(generate_image_agent_router, prefix="/api/generate-image", tags=["Generate Image"])
 app.include_router(mathematic_agent_router, prefix="/api/mathematic", tags=["Mathematic"])
+app.include_router(user_router, prefix="/api/user", tags=["auth"])
 # app.include_router(evaluaetion_agent_router, prefix="/api/evaluaetion", tags=["Evaluaetion"])
 
 

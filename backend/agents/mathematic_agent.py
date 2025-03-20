@@ -28,19 +28,27 @@ async def generate_math_questions(request: GenerateMathRequest):
 
     prompts = {
     1: "Create a simple addition problem for children with ٣ answer choices. "
+    " one the 3 answer is the correct ansewr which also return it"
        "The response must be JSON only, without any comments or explanations: "
-       "{\"question\": \"...\", \"choices\": {\"أ\": \"...\", \"ب\": \"...\", \"ج\": \"...\"}}",
+       "{\"question\": \"...\", \"choices\": {\"أ\": \"...\", \"ب\": \"...\", \"ج\": \"...\"}, \"correct_answer\": \"...\"}",
     2: "Create a simple subtraction problem for children with ٣ answer choices. "
+    " one the 3 answer is the correct ansewr which also return it"
        "The response must be JSON only, without any comments or explanations: "
-       "{\"question\": \"...\", \"choices\": {\"أ\": \"...\", \"ب\": \"...\", \"ج\": \"...\"}}",
+       "{\"question\": \"...\", \"choices\": {\"أ\": \"...\", \"ب\": \"...\", \"ج\": \"...\"}, \"correct_answer\": \"...\"}",
     3: "Create a simple counting problem for children with ٣ answer choices. "
+    " one the 3 answer is the correct ansewr which also return it"
        "The response must be JSON only, without any comments or explanations: "
-       "{\"question\": \"...\", \"choices\": {\"أ\": \"...\", \"ب\": \"...\", \"ج\": \"...\"}}",
+       "{\"question\": \"...\", \"choices\": {\"أ\": \"...\", \"ب\": \"...\", \"ج\": \"...\"}, \"correct_answer\": \"...\"}",
     4: "Create a simple comparison problem for children with ٣ answer choices. "
+    " one the 3 answer is the correct ansewr which also return it"
        "The response must be JSON only, without any comments or explanations: "
-       "{\"question\": \"...\", \"choices\": {\"أ\": \"...\", \"ب\": \"...\", \"ج\": \"...\"}}"
-}
-
+       "{\"question\": \"...\", \"choices\": {\"أ\": \"...\", \"ب\": \"...\", \"ج\": \"...\"}, \"correct_answer\": \"...\"}",
+    # 5: "Create a problem for children asking how many balls (or any other object) are there in the image, with ٣ answer choices. "
+    #    "One of the 3 answers is the correct answer, which is the number of balls, and the other two answers are incorrect. "
+    #    "Also, generate a relevant image that visually represents this question."
+    #    "The response must be JSON only, without any comments or explanations: "
+    #    "{\"question\": \"How many balls are there?\", \"choices\": {\"أ\": \"...\", \"ب\": \"...\", \"ج\": \"...\"}, \"correct_answer\": \"...\", \"image_url\": \"...\"}"
+    }
 
     if level not in prompts:
         raise HTTPException(status_code=400, detail="المستوى غير صحيح. اختر مستوى بين 1 و 4.")
@@ -82,6 +90,19 @@ async def generate_math_questions(request: GenerateMathRequest):
             print("No valid JSON found.")
     except json.JSONDecodeError:
         raise HTTPException(status_code=500, detail="تعذر تحليل البيانات المُولدة بتنسيق JSON.")
+    
+     # For level 5: Generate an image and include the image URL
+    if level == 5:
+        # Placeholder for image generation, replace with actual image generation logic or URL
+        image_url = "https://example.com/image_of_balls.jpg"  # You can replace this URL with an actual image URL from an image generation API or service.
+
+        # Add image URL to the structured data
+        structured_data["image_url"] = image_url
+
+    # Add logic to include the correct answer in the returned response
+    correct_answer = structured_data.get("correct_answer", None)
+    if correct_answer:
+        structured_data["correct_answer"] = correct_answer
 
     return {
         "level": level,
