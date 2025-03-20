@@ -7,7 +7,7 @@ from datetime import datetime
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
-# from together import Together
+from together import Together
 
 from utils.load_helper import OPENAI_API_KEY_TOGETHER, HUGGINGFACE_TOKEN, OPENAI_API_KEY
 from openai import OpenAI
@@ -18,14 +18,14 @@ import requests
 router = APIRouter()
 
 # Assuming Together client is already initialized
-# client_together = Together(api_key=OPENAI_API_KEY_TOGETHER)
-# client = OpenAI(
-#     base_url="https://router.huggingface.co/novita",
-#     api_key=HUGGINGFACE_TOKEN
-# )
+client_together = Together(api_key=OPENAI_API_KEY_TOGETHER)
+client = OpenAI(
+    base_url="https://router.huggingface.co/novita",
+    api_key=HUGGINGFACE_TOKEN
+)
 
 # Define the Hugging Face Inference API URL for the Mistral model
-API_URL = "https://router.huggingface.co/hf-inference/models/asafaya/bert-base-arabic"
+# API_URL = "https://router.huggingface.co/hf-inference/models/asafaya/bert-base-arabic"
 
 # Set up headers with the API token
 headers = {
@@ -37,7 +37,7 @@ headers = {
 class GenerateMathRequest(BaseModel):
     level: int = Field(..., description="The difficulty level of the math question. Choose 1, 2, 3, or 4.")
 
-@router.post("/generate_math", status_code=201)
+@router.post("/generate-math", status_code=201)
 async def generate_math_questions(request: GenerateMathRequest):
     """
     Generate math questions for kids with four levels in Arabic.
@@ -63,36 +63,50 @@ async def generate_math_questions(request: GenerateMathRequest):
 
     # Generate text content using Hugging Face's Mistral model
     try:
-        response = requests.post(
-            API_URL,
-            headers=headers,
-            json={"inputs": text_prompt}
+            response = client.chat.completions.create(
+            # model="Qwen/Qwen2.5-Coder-32B-Instruct",
+            # meta-llama-llama-2-70b-hf
+        #    model="Meta-Llama-3.3-70B-Instruct",
+        # model="meta-llama/Llama-2-70b-chat-hf",
+        # model="mistralai/Mistral-7B-Instruct-v0.1",
+        model="meta-llama/llama-3-70b-instruct",
+            messages=[{"role": "user", "content": text_prompt}],
         )
-        response.raise_for_status()
-        text_content = response.json()[0]["generated_text"].strip()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"حدث خطأ أثناء توليد النص: {e}")
-    try:
-        # Extract the question (everything before the first choice)
-        question = text_content.split("أ)")[0].strip()
+        
+            # Extract the generated story from the response
+            if hasattr(response, "choices") and response.choices:
+                first_choice = response.choices[0]
 
-        # Extract the choices
-        choices_part = text_content.split("أ)")[1].strip()
-        choices = {
-            "أ": choices_part.split("ب)")[0].strip(),
-            "ب": choices_part.split("ب)")[1].split("ج)")[0].strip(),
-            "ج": choices_part.split("ج)")[1].strip()
-        }
+                if hasattr(first_choice, "message") and hasattr(first_choice.message, "content"):
+                    text_content = first_choice.message.content.strip()
+                    print(f"text_content: {text_content}")
+                    # if level == 2:
+                    #     return {"level": level, "exercise": text_content}
 
-        # Determine the correct answer (assuming the first choice is correct)
-        correct_answer = "أ" 
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"حدث خطأ أثناء تحليل النص: {e}")
+            raise HTTPException(status_code=500, detail=f"حدث خطأ أثناء توليد النص: {e}")
+
+    
+    # Extract the question (everything before the first choice)
+    question = text_content.split("أ)")[0].strip()
+
+    # Extract the choices
+    choices_part = text_content.split("أ)")[1].strip()
+    choices = {
+        "أ": choices_part.split("ب)")[0].strip(),
+        "ب": choices_part.split("ب)")[1].split("ج)")[0].strip(),
+        "ج": choices_part.split("ج)")[1].strip()
+    }
+
+    # Determine the correct answer (assuming the first choice is correct)
+   # correct_answer = "أ" 
+
 
     return {
         "level": level,
         "question": question,
         "choices": choices,
-        "correct_answer": correct_answer
+      #  "correct_answer": correct_answer
     }
     

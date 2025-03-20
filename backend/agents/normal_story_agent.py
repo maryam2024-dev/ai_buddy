@@ -10,7 +10,6 @@ from together import Together
 from utils.load_helper import OPENAI_API_KEY_TOGETHER,HUGGINGFACE_TOKEN,OPENAI_API_KEY
 from openai import OpenAI
 import requests
-from diffusers import DiffusionPipeline
 from PIL import Image
 import requests
 import os
