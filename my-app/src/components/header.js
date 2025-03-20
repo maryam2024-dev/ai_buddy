@@ -1,9 +1,11 @@
 import React from 'react';
 import "./design.css"
+import {useNavigate} from "react-router-dom";
 
 const Header = () => {
+    const navigate = useNavigate();
     return (
-        <svg width="197" height="49" viewBox="0 0 197 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg className={"cursor-pointer"} onClick={() => navigate("/")} width="197" height="49" viewBox="0 0 197 49" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g >
                 <mask id="path-1-outside-1_2_409" maskUnits="userSpaceOnUse" x="0" y="0" width="197" height="49" fill="black">
                     <rect fill="white" width="197" height="49"/>
