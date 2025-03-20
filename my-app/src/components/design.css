@@ -166,7 +166,7 @@
 
 .Card{
     /* Product Info Card */
-
+    cursor: pointer;
     box-sizing: border-box;
 
     /* Auto layout */
@@ -182,5 +182,40 @@
     background: #FFFFFF;
     border: 1px solid #D9D9D9;
     border-radius: 8px;
+}
 
+.story{
+    /* Once upon a time, in a small village, lived a kind little boy named Omar. He always helped others and shared what he had One day, Omar saw an old man struggling to carry a heavy bag. Without hesitation, he ran to help him. */
+
+    width: 60%;
+    height: 355px;
+
+    /* M3/headline/small */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 32px;
+    /* or 133% */
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+}
+
+.success{
+    /* You are amazing! 🌟 You got most of the answers right! 💡 Keep trying, you are smart and hardworking. Next time, you’ll be the star of the class! ⭐🎉 */
+
+    width: 570px;
+    /* M3/title/large */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 28px;
+    /* or 127% */
+    text-align: center;
+
+    color: #000000;
 }

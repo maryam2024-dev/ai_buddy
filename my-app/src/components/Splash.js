@@ -2,17 +2,25 @@ import React from 'react';
 import "./design.css"
 import Header from "./header";
 import robot from "../assets/WhatsApp Image 2025-03-16 at 10.05.38 PM.jpeg"
+import {useNavigate} from "react-router-dom";
 
 const Splash = () => {
+    const navigate = useNavigate();
+    const logIn = () => {
+        navigate("/signin");
+    }
+    const signUp = () => {
+        navigate("/signup");
+    }
     return (
         <div>
             <div className={"header"}>
                 <Header />
                 <div className={"flex flex-row gap-[47px] h-[119px] align-top"}>
-                    <button className={"sign-btn"}>
+                    <button className={"sign-btn"} onClick={signUp}>
                         التسجيل
                     </button>
-                    <button className={"sign-btn"}>
+                    <button className={"sign-btn"} onClick={logIn}>
                         الدخول
                     </button>
                 </div>
@@ -52,7 +60,7 @@ const Splash = () => {
 
             </div>
             <div className={"flex justify-end pr-[82px]"}>
-                <button className={"start"}>!
+                <button className={"start"} onClick={signUp}>!
                     هيا بنا لنبدأ
                 </button>
             </div>
