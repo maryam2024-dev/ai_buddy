@@ -17,71 +17,64 @@ const AlphabetEn = () => {
     const [selectedLetters, setSelectedLetters] = useState({});
 
     useEffect(() => {
-        // fetch("http://127.0.0.1:8000/api/alpabet-eng/generate", {
-//     method: "POST",
-//     headers: {
-//         "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({ level: level }),
-// })
-//     .then((response) => response.json())
-//     .then((data) => {
-//         setLevel(data.level);
-//         setQuestion(data.question);
-//         setExercise(data.exercise);
-//         setCorrectWord(data.correct_word);
-//
-//         // ✅ Ensure imageUrls is an array
-//         const images = Array.isArray(data.image_url) ? data.image_url : [data.image_url];
-//         setImageUrls(images);
-//     })
-//     .catch((error) => console.error("Error fetching exercise:", error));
-
-        const data =
-            level === 1
-                ? {
-                    level: 1,
-                    exercise: [
-                        { correct: true, english: "cat" },
-                        { correct: false, english: "dog" },
-                        { correct: false, english: "bird" },
-                    ],
-                    correct_word: "cat",
-                    image_url: "http://127.0.0.1:8000/static\\english_alphabetic_learning_images\\english_level_1_20250321003519.png",
-                    question: "Which of these words matches the image?",
-                }
-                : level === 2
-                    ? {
-                        level: 2,
-                        exercise: { words: ["Ape", "Bee", "Cat", "Dog"], letters: ["A", "B", "C", "D"] },
-                        image_url: null,
-                        question: "Match the words with the correct letters.",
-                    }
-                    : level === 3
-                        ? {
-                            level: 3,
-                            exercise: [
-                                { correct: false, english: "jump", translation: "jumping" },
-                                { correct: true, english: "read", translation: "reading" },
-                                { correct: false, english: "write", translation: "writing" },
-                            ],
-                            correct_word: "read",
-                            image_url: "http://127.0.0.1:8000/static\\english_alphabetic_learning_images\\english_level_3_20250321003603.png",
-                            question: "Which of these verbs matches the image?",
-                        }
-                        : "";
-
-        if (level <= 3) {
-            setLevel(data.level);
-            setQuestion(data.question);
-            setExercise(data.exercise);
-            setImageUrls(data.image_url ? [data.image_url] : []); // Ensure imageUrls is an array
-            setSelectedAnswer(null); // Reset selected answer
-            setShowMessage(""); // Reset message
-            setIsNextEnabled(false); // Disable "Next" button
-        } else if (level > 3) {
+        if (level > 3) {
             navigate("/eval");
         }
+        fetch("http://127.0.0.1:8000/api/alpabet-eng/generate", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ level: level }),
+})
+    .then((response) => response.json())
+    .then((data) => {
+        setLevel(data.level);
+        setQuestion(data.question);
+        setExercise(data.exercise);
+        // setCorrectWord(data.correct_word);
+
+        // ✅ Ensure imageUrls is an array
+        const images = Array.isArray(data.image_url) ? data.image_url : [data.image_url];
+        setImageUrls(images);
+    })
+    .catch((error) => console.error("Error fetching exercise:", error));
+
+        // const data =
+        //     level === 1
+        //         ? {
+        //             level: 1,
+        //             exercise: [
+        //                 { correct: true, english: "cat" },
+        //                 { correct: false, english: "dog" },
+        //                 { correct: false, english: "bird" },
+        //             ],
+        //             correct_word: "cat",
+        //             image_url: "http://127.0.0.1:8000/static\\english_alphabetic_learning_images\\english_level_1_20250321003519.png",
+        //             question: "Which of these words matches the image?",
+        //         }
+        //         : level === 2
+        //             ? {
+        //                 level: 2,
+        //                 exercise: { words: ["Ape", "Bee", "Cat", "Dog"], letters: ["A", "B", "C", "D"] },
+        //                 image_url: null,
+        //                 question: "Match the words with the correct letters.",
+        //             }
+        //             : level === 3
+        //                 ? {
+        //                     level: 3,
+        //                     exercise: [
+        //                         { correct: false, english: "jump", translation: "jumping" },
+        //                         { correct: true, english: "read", translation: "reading" },
+        //                         { correct: false, english: "write", translation: "writing" },
+        //                     ],
+        //                     correct_word: "read",
+        //                     image_url: "http://127.0.0.1:8000/static\\english_alphabetic_learning_images\\english_level_3_20250321003603.png",
+        //                     question: "Which of these verbs matches the image?",
+        //                 }
+        //                 : "";
+
+       
     }, [level]);
 
     const handleAnswerClick = (ex) => {
@@ -122,6 +115,7 @@ const AlphabetEn = () => {
     const handleNextClick = () => {
         if (isNextEnabled) {
             setLevel((level) => level + 1);
+            setShowMessage("");
         }
     };
 
@@ -153,7 +147,7 @@ const AlphabetEn = () => {
                 <div className="w-[755px] font-roboto font-normal text-[24px] leading-[32px] flex flex-col items-center justify-center text-[#000000]">
                     <p>{question || "Loading question..."}</p>
                     <div className="mt-[32px] flex flex-row justify-between w-full">
-                        {imageUrls.length > 0 ? (
+                        {imageUrls?.length > 0 ? (
                             imageUrls.map((img, index) => (
                                 <img key={index} src={img} alt={`Option ${index + 1}`} style={{ width: "188px", height: "172px" }} />
                             ))
@@ -181,7 +175,7 @@ const AlphabetEn = () => {
                                 </div>
                             ))
                         ) : (
-                            exercise.length > 0 ? (
+                            exercise?.length > 0 ? (
                                 exercise.map((ex, index) => (
                                     <p
                                         key={index}
